@@ -17,8 +17,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 public final class PopulateTable {
+
+    private static final Logger LOGGER = Logger.getLogger("PopulateTable");
 
     private PopulateTable(){}
 
@@ -46,10 +49,10 @@ public final class PopulateTable {
 
             try {
                 table.putItem(item);
-                System.out.println("PutItem succeeded: " + year + " " + title);
+                LOGGER.info(String.format("PutItem succeeded: %d %s", year, title));
             } catch (Exception ex) {
-                System.err.println("Unable to add movie: " + year + " " + title);
-                System.err.println(ex.getMessage());
+                LOGGER.severe("Unable to add movie: " + year + " " + title);
+                LOGGER.severe(ex.getMessage());
             }
         }
     }

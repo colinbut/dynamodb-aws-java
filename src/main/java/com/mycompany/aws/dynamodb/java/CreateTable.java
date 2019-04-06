@@ -14,8 +14,11 @@ import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 public final class CreateTable {
+
+    private static final Logger LOGGER = Logger.getLogger("CreateTable");
 
     private CreateTable(){}
 
@@ -24,7 +27,7 @@ public final class CreateTable {
         String rangeKey = "title";
 
         try {
-            System.out.println("Attempting to create table; please wait...");
+            LOGGER.info("Attempting to create table; please wait...");
 
             List<KeySchemaElement> keySchemaElements = Arrays.asList(new KeySchemaElement(hashKey, KeyType.HASH),
                 new KeySchemaElement(rangeKey, KeyType.RANGE));
@@ -37,11 +40,11 @@ public final class CreateTable {
 
             table.waitForActive();
 
-            System.out.println(String.format("Success... Created table %s, table status: %s", table.getTableName(), table.getDescription()));
+            LOGGER.info(String.format("Success... Created table %s, table status: %s", table.getTableName(), table.getDescription()));
 
         } catch (Exception ex) {
-            System.err.println("Unable to create table: ");
-            System.err.println(ex.getMessage());
+            LOGGER.severe("Unable to create table: ");
+            LOGGER.severe(ex.getMessage());
         }
     }
 }

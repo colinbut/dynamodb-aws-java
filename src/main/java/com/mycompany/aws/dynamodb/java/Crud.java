@@ -20,8 +20,11 @@ import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public final class Crud {
+
+    private static final Logger LOGGER = Logger.getLogger("Crud");
 
     private Crud(){}
 
@@ -32,7 +35,7 @@ public final class Crud {
         int year = 2015;
         String title = "The Big New Movie";
 
-        final Map<String, Object> infoMap = new HashMap<String, Object>();
+        final Map<String, Object> infoMap = new HashMap<>();
         infoMap.put("plot", "Nothing happens at all.");
         infoMap.put("rating", 0);
 
@@ -42,10 +45,10 @@ public final class Crud {
 
         try {
             PutItemOutcome putItemOutcome = table.putItem(item);
-            System.out.println("PutItem succeeded:\n" + putItemOutcome.getPutItemResult());
+            LOGGER.info("PutItem succeeded:\n" + putItemOutcome.getPutItemResult());
         } catch (Exception ex) {
-            System.err.println("Unable to add movie: " + year + " " + title);
-            System.err.println(ex.getMessage());
+            LOGGER.severe("Unable to add movie: " + year + " " + title);
+            LOGGER.severe(ex.getMessage());
         }
     }
 
@@ -61,9 +64,10 @@ public final class Crud {
 
         try {
             Item item = table.getItem(spec);
+            LOGGER.info("{} +  item" + item);
         } catch (Exception ex) {
-            System.err.println("Unable to read item: " + year + " " + title);
-            System.err.println(ex.getMessage());
+            LOGGER.severe("Unable to read item: " + year + " " + title);
+            LOGGER.severe(ex.getMessage());
         }
     }
 
@@ -86,12 +90,12 @@ public final class Crud {
             .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
-            System.out.println("Updating item: " + updateItemSpec);
+            LOGGER.info("Updating item: " + updateItemSpec);
             UpdateItemOutcome updateItemOutcome = table.updateItem(updateItemSpec);
-            System.out.println("UpdateItem succeeded:\n" + updateItemOutcome.getItem().toJSONPretty());
+            LOGGER.info("UpdateItem succeeded:\n" + updateItemOutcome.getItem().toJSONPretty());
         } catch (Exception ex) {
-            System.err.println("Unable to update movie: " + year + " " + title);
-            System.err.println(ex.getMessage());
+            LOGGER.severe("Unable to update movie: " + year + " " + title);
+            LOGGER.severe(ex.getMessage());
         }
     }
 
@@ -109,12 +113,12 @@ public final class Crud {
             .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
-            System.out.println("Incrementing an atomic counter...");
+            LOGGER.info("Incrementing an atomic counter...");
             UpdateItemOutcome updateItemOutcome = table.updateItem(updateItemSpec);
-            System.out.println("UpdateItem succeeded:\n" + updateItemOutcome.getItem().toJSONPretty());
+            LOGGER.info("UpdateItem succeeded:\n" + updateItemOutcome.getItem().toJSONPretty());
         } catch (Exception ex) {
-            System.err.println("Unable to update movie: " + year + " " + title);
-            System.err.println(ex.getMessage());
+            LOGGER.severe("Unable to update movie: " + year + " " + title);
+            LOGGER.severe(ex.getMessage());
         }
     }
 
@@ -133,12 +137,12 @@ public final class Crud {
             .withReturnValues(ReturnValue.UPDATED_NEW);
 
         try {
-            System.out.println("Going for a conditional update");
+            LOGGER.info("Going for a conditional update");
             UpdateItemOutcome updateItemOutcome = table.updateItem(updateItemSpec);
-            System.out.println("UpdateItem succeeded:\n" + updateItemOutcome.getItem().toJSONPretty());
+            LOGGER.info("UpdateItem succeeded:\n" + updateItemOutcome.getItem().toJSONPretty());
         } catch (Exception ex) {
-            System.err.println("Unable to update movie: " + year + " " + title);
-            System.err.println(ex.getMessage());
+            LOGGER.severe("Unable to update movie: " + year + " " + title);
+            LOGGER.severe(ex.getMessage());
         }
     }
 
@@ -155,12 +159,12 @@ public final class Crud {
             .withValueMap(new ValueMap().withNumber(":val", 5.0));
 
         try {
-            System.out.println("Attempting to conditionally delete an item...");
+            LOGGER.info("Attempting to conditionally delete an item...");
             table.deleteItem(deleteItemSpec);
-            System.out.println("Deleted item successfully");
+            LOGGER.info("Deleted item successfully");
         } catch (Exception ex) {
-            System.err.println("Unable to delete movie: " + year + " " + title);
-            System.err.println(ex.getMessage());
+            LOGGER.severe("Unable to delete movie: " + year + " " + title);
+            LOGGER.severe(ex.getMessage());
         }
     }
 }

@@ -27,7 +27,7 @@ public final class AmazonDynamoDBClientManager {
 
     private AmazonDynamoDBClientManager(){}
 
-    public static DynamoDB getDynamoDB() {
+    static DynamoDB getDynamoDB() {
         return dynamoDB;
     }
 }
