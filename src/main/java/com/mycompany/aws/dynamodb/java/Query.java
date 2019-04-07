@@ -47,5 +47,26 @@ public class Query {
             LOGGER.severe("Unable to query movie");
             LOGGER.severe(ex.getMessage());
         }
+
+        valueMap.put(":yyyy", 1992);
+        valueMap.put(":letter1", "A");
+        valueMap.put(":letter2", "L");
+
+        querySpec = querySpec.withProjectionExpression("#yr, title, info.genres, info.actors[0]")
+            .withKeyConditionExpression("#yr = :yyyy and title between :letter1 and :letter2")
+            .withNameMap(nameMap)
+            .withValueMap(valueMap);
+
+        try {
+            LOGGER.info("Movies from 1992 - titles: A - L, with genres and lead actor");
+            ItemCollection<QueryOutcome> items = table.query(querySpec);
+            for (Item item : items) {
+                LOGGER.info(item.getNumber("year") + " : " + item.getString("title") + " : " +
+                    item.getMap("info"));
+            }
+        } catch (Exception ex) {
+            LOGGER.severe("Unable to query movie");
+            LOGGER.severe(ex.getMessage());
+        }
     }
 }
